@@ -1,0 +1,65 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <h1 class="mt-5">Domowa biblioteka</h1>
+    <p class="lead">Prowadź ewidencję posiadanego zbioru</p>
+  </div>
+  <div>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Tytuł</th>
+        <th scope="col">Autorzy</th>
+        <th scope="col">Gatunek</th>
+        <th scope="col">Wydawca</th>
+        <th scope="col">Rok</th>
+        <th scope="col">Przeczytana?</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for book in books %}
+      <tr>
+      <td>{{ book.title }}</td>
+      <td>
+        {% for author in book.authors %}
+        {{ author.name }} {{ author.surname }}
+        {% endfor %}
+      </td>
+      <td>{{ book.genre }}</td>
+      <td>{{ book.publisher }}</td>
+      <td>{{ book.year }}</td>
+      <td>
+        {% if book.done == True %}
+        <span class="text-success">
+          <i class="fas fa-check"></i>
+        </span>        
+        {% else %}
+        <span class="text-danger">
+          <i class="fas fa-times"></i>
+        </span>
+        {% endif %}
+      </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <div>
+    <h3> Dodaj nową książkę: </h3>
+    <form method="POST" action="/books/">
+        {{ form.hidden_tag() }}
+        <table>
+            {% for field in form if field.widget.input_type != 'hidden' %}
+                <tr>
+                    <th>{{ field.label }} {% if field.flags.required %}*{% endif %}</th>
+                    <td>{{ field }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="Zatwierdź">
+    </form>
+</div>
+</div>
+{% endblock %}
