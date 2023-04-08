@@ -1,5 +1,6 @@
 from app import db
-from app.models import Book, Author
+from app.models import Book, Author, Hire
+import logging
 
 
 def add_or_get_author(name):
@@ -10,6 +11,18 @@ def add_or_get_author(name):
         db.session.commit()
     return author
 
+
+def get_book_id_by_title(title):
+    book = Book.query.filter_by(title=title).first()
+    if book:
+        return book.id 
+    logging.error("Book not in database")
+
+def get_book_title_by_id(id):
+    book = Book.query.filter_by(id=id).first()
+    if book:
+        return book.title 
+    logging.error("Book not in database")
 
 def add_book(data):
     book = Book(
@@ -31,5 +44,15 @@ def add_book(data):
     db.session.commit()
 
 
-def add_hire():
-    pass
+def add_hire(data):
+    book_id = get_book_id_by_title(data["title"])
+    if book_id:
+        hire = Hire(
+            date=data["date"],
+            who=data["who"],
+            done=data["done"],
+            book_id=book_id
+        )
+
+        db.session.add(hire)
+        db.session.commit()

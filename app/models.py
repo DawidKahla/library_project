@@ -22,7 +22,6 @@ class Book(db.Model):
     def __str__(self):
         return f'<Book "{self.title}" by {self.authors}>'
 
-
 class Author(db.Model):
     __tablename__ = "authors"
     id = db.Column(db.Integer, primary_key=True)
@@ -36,8 +35,9 @@ class Author(db.Model):
 class Hire(db.Model):
     __tablename__ = "hires"
     id = db.Column(db.Integer, primary_key=True)
-    start = db.Column(db.String(128), index=True)
-    end = db.Column(db.String(128), index=True)
+    date = db.Column(db.String(128), index=True)
+    who = db.Column(db.String(128), index=True)
+    done = db.Column(db.Boolean, index=True)
     book_id = db.Column(db.Integer, db.ForeignKey("books.id"))
 
     def __str__(self):

@@ -1,0 +1,57 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <h1 class="mt-5">Domowa biblioteka - Wypożyczenia</h1>
+    <p class="lead">Pilnuj swojego zbioru!</p>
+  </div>
+  <div>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Tytuł</th>
+        <th scope="col">Data wypożyczenia</th>
+        <th scope="col">Pożyczający</th>
+        <th scope="col">Oddano?</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for hire in hires %}
+      <tr>
+      <td>{{ hire.title }}</td>
+      <td>{{ hire.date }}</td>
+      <td>{{ hire.who }}</td>
+      <td>
+        {% if hire.done == True %}
+        <span class="text-success">
+          <i class="fas fa-check"></i>
+        </span>        
+        {% else %}
+        <span class="text-danger">
+          <i class="fas fa-times"></i>
+        </span>
+        {% endif %}
+      </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <div>
+    <h3> Dodaj wypożyczenie: </h3>
+    <form method="POST" action="/hires/">
+        {{ form.hidden_tag() }}
+        <table>
+            {% for field in form if field.widget.input_type != 'hidden' %}
+                <tr>
+                    <th>{{ field.label }} {% if field.flags.required %}*{% endif %}</th>
+                    <td>{{ field }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="Zatwierdź">
+    </form>
+</div>
+</div>
+{% endblock %}
