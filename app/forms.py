@@ -13,9 +13,9 @@ class BookForm(FlaskForm):
 
 
 class HireForm(FlaskForm):
-    title = SelectField("Tytuł", [DataRequired()])
+    title = SelectField("Tytuł")
     date = DateField(
-        "Data wypożyczenia", format="%d-%m-%Y", validators=[DataRequired()]
+        "Data wypożyczenia", format="%Y-%m-%d"
     )
     who = StringField("Wypożyczający")
     done = BooleanField("Czy zwrócono?")
