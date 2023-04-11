@@ -15,14 +15,16 @@ def add_or_get_author(name):
 def get_book_id_by_title(title):
     book = Book.query.filter_by(title=title).first()
     if book:
-        return book.id 
+        return book.id
     logging.error("Book not in database")
 
-def get_book_title_by_id(id):
-    book = Book.query.filter_by(id=id).first()
+
+def get_book_title_by_id(book_id):
+    book = Book.query.filter_by(id=book_id).first()
     if book:
-        return book.title 
+        return book.title
     logging.error("Book not in database")
+
 
 def add_book(data):
     book = Book(
@@ -48,11 +50,14 @@ def add_hire(data):
     book_id = get_book_id_by_title(data["title"])
     if book_id:
         hire = Hire(
-            date=data["date"],
-            who=data["who"],
-            done=data["done"],
-            book_id=book_id
+            date=data["date"], who=data["who"], done=data["done"], book_id=book_id
         )
-
-        db.session.add(hire)
-        db.session.commit()
+        other_hires = Book.query.filter_by(id=book_id).all()
+        if other_hires:
+            other_hires_status = all(other_hire.done for other_hire in other_hires)
+            if other_hires_status:
+                db.session.add(hire)
+                db.session.commit()
+        else:
+            db.session.add(hire)
+            db.session.commit()

@@ -19,7 +19,7 @@
     <tbody>
     {% for hire in hires %}
       <tr>
-      <td>{{ hire.title }}</td>
+      <td>{{ books[hire.book_id-1].title }}</td>
       <td>{{ hire.date }}</td>
       <td>{{ hire.who }}</td>
       <td>
