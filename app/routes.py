@@ -26,7 +26,6 @@ def hires():
     if request.method == "POST":
         if form.validate_on_submit():
             add_hire(data=form.data)
-        print(form.errors)
         return redirect(url_for("hires"))
     return render_template(
         "hires.html", hires=hires_from_db, books=books_from_db, form=form
